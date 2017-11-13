@@ -1,46 +1,16 @@
 package main
 
 import "fmt"
-import "errors"
 
 var n, s, d, f, b, k int
-
-func play(land []string) (int, error) {
-	defer func() {
-		rcv := recover()
-		_ = rcv
-	}()
-	r := 0
-	var err error
-	if err != nil {
-		return -1, errors.New("BUG FOUND")
-	}
-	if land[s-1] == "C" {
-		r = -1
-		err = errors.New("BUG FOUND")
-	}
-	land[s] = "C"
-	if land[s-1+f] == "D" {
-		land[s-1+f] = "S"
-		return r + 1, err
-	} else {
-		if land[s-1+f] == "K" {
-			s -= b
-			r, err = play(land)
-		} else {
-			s += f
-			r, err = play(land)
-		}
-		r++
-	}
-	return r, err
-}
+var land []string
+var police []int
 
 func main() {
 	fmt.Scanf("%d%d%d%d%d%d\n", &n, &s, &d, &f, &b, &k)
 	fmt.Printf("%d %d %d %d %d %d\n", n, s, d, f, b, k)
-	land := make([]string, n)
-	police := make([]int, 0)
+	tmp := make([]string, n)
+	land = append(land, tmp...)
 	for i := 0; i < k; i++ {
 		var p int
 		fmt.Scanf("%d", &p)
@@ -70,7 +40,5 @@ func main() {
 
 	setData()
 	showInGraphic()
-	result, err := play(land)
-	fmt.Println(result, err)
-	showInGraphic()
+
 }
