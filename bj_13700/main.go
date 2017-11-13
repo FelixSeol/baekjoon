@@ -1,6 +1,7 @@
 package main
 
 import "fmt"
+import "errors"
 
 var n, s, d, f, b, k int
 var land []string
@@ -40,5 +41,26 @@ func main() {
 
 	setData()
 	showInGraphic()
+	r, err := play(s - 1)
+	fmt.Println(r, err)
+}
 
+func play(_s int) (int, error) {
+	var r int
+	var err error
+
+	if land[_s-1] == "K" || land[_s-1] == "C" || _s-1 < 0 || _s > n {
+		err = errors.New("BUG REPORT")
+	} else {
+		if land[_s-1+f] == "D" {
+			return r + 1, err
+		}
+		if land[_s-1+f] == "K" {
+			r, err = play(_s - b)
+		} else {
+			r, err = play(_s + f)
+		}
+		r += 1
+	}
+	return r, err
 }
